@@ -1,0 +1,59 @@
+@startuml
+
+actor Recepcionista
+boundary "Interfaz de Usuario" as UI
+control "MembresiaController" as Controller
+entity "MembresiaService" as Service
+database "Base de Datos" as DB
+
+Recepcionista -> UI : ingresarCIoCodigo()
+UI -> Controller : consultarEstado(criterio)
+
+Controller -> Service : buscarSocio(criterio)
+
+alt Búsqueda por C.I.
+
+    Service -> DB : buscarPorCI(ci)
+
+else Búsqueda por código
+
+    Service -> DB : buscarPorCodigo(codigoSocio)
+
+end
+
+alt Socio encontrado
+
+    DB --> Service : socio
+
+    Service -> DB : consultarMembresia(idSocio)
+    DB --> Service : membresia
+
+    Service -> Service : verificarEstado()
+
+    Service --> Controller : estadoMembresia
+
+    Controller --> UI : mostrarEstado(estado)
+
+    alt Membresía vigente
+
+        Controller --> UI : indicarAccesoPermitido()
+
+    else Membresía vencida
+
+        Controller --> UI : indicarAccesoDenegado()
+
+    end
+
+else Socio no encontrado
+
+    DB --> Service : noEncontrado
+
+    Service --> Controller : error()
+
+    Controller --> UI : mostrarError("Socio no encontrado")
+
+end
+
+UI --> Recepcionista : Resultado de consulta
+
+@enduml
