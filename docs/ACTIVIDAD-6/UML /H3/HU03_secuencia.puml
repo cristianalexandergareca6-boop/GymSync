@@ -1,0 +1,66 @@
+@startuml
+
+actor Recepcionista
+boundary "Interfaz de Usuario" as UI
+control "MembresiaController" as Controller
+entity "MembresiaService" as Service
+database "Base de Datos" as DB
+
+Recepcionista -> UI : seleccionarPlan()
+UI -> Controller : obtenerPlan(idPlan)
+Controller -> Service : buscarPlan(idPlan)
+Service -> DB : consultarPlan(idPlan)
+
+alt Plan disponible
+
+    DB --> Service : datosPlan
+    Service --> Controller : planEncontrado
+    Controller --> UI : mostrarPlan(plan)
+
+    Recepcionista -> UI : seleccionarSocio(idSocio)
+    UI -> Controller : registrarMembresia(idSocio, idPlan, fechaInicio)
+
+    Controller -> Service : validarSocio(idSocio)
+    Service -> DB : buscarSocio(idSocio)
+
+    alt Socio encontrado
+
+        DB --> Service : socioEncontrado
+
+        Service -> Service : calcularFechaVencimiento(fechaInicio, plan)
+
+        Service -> DB : guardarMembresia(idSocio, idPlan, fechaInicio, fechaVencimiento)
+
+        DB --> Service : membresiaGuardada
+
+        Service --> Controller : registroExitoso(fechaVencimiento)
+
+        Controller --> UI : mostrarConfirmacion(fechaVencimiento)
+
+        UI --> Recepcionista : Membresía registrada correctamente
+
+    else Socio no encontrado
+
+        DB --> Service : socioNoEncontrado
+
+        Service --> Controller : errorSocio()
+
+        Controller --> UI : mostrarError("Socio no encontrado")
+
+        UI --> Recepcionista : Seleccionar otro socio
+
+    end
+
+else Plan no disponible
+
+    DB --> Service : planNoEncontrado
+
+    Service --> Controller : errorPlan()
+
+    Controller --> UI : mostrarError("Plan no encontrado")
+
+    UI --> Recepcionista : Seleccionar otro plan
+
+end
+
+@enduml
