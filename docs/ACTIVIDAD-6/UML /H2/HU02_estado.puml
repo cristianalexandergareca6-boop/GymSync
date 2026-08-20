@@ -1,0 +1,25 @@
+@startuml
+
+[*] --> EsperandoBusqueda
+
+EsperandoBusqueda --> Buscando : Buscar socio
+
+Buscando --> MostrandoDatos : Socio encontrado
+Buscando --> SocioNoEncontrado : Socio no encontrado
+
+SocioNoEncontrado --> EsperandoBusqueda : Nueva búsqueda
+
+MostrandoDatos --> Editando : Modificar información
+
+Editando --> Validando : Guardar cambios
+
+Validando --> CambiosGuardados : Datos válidos
+Validando --> ErrorValidacion : Datos inválidos
+
+ErrorValidacion --> Editando : Corregir información
+
+CambiosGuardados --> Actualizado : Actualización exitosa
+
+Actualizado --> [*]
+
+@enduml
