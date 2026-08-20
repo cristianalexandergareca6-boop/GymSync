@@ -1,0 +1,19 @@
+@startuml
+
+[*] --> Nueva
+
+Nueva --> SeleccionandoPlan : Iniciar registro
+
+SeleccionandoPlan --> AsociandoSocio : Plan seleccionado
+
+AsociandoSocio --> RegistrandoFechaInicio : Socio asociado
+
+RegistrandoFechaInicio --> CalculandoVencimiento : Fecha registrada
+
+CalculandoVencimiento --> Guardando : Fecha calculada
+
+Guardando --> Registrada : Membresía guardada
+
+Registrada --> [*]
+
+@enduml
