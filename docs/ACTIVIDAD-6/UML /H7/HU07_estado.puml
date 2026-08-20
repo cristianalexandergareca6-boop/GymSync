@@ -1,0 +1,23 @@
+@startuml
+
+[*] --> EsperandoIdentificacion
+
+EsperandoIdentificacion --> BuscandoSocio : Identificar socio
+
+BuscandoSocio --> ValidandoMembresia : Socio encontrado
+BuscandoSocio --> SocioNoEncontrado : Socio no encontrado
+
+SocioNoEncontrado --> EsperandoIdentificacion : Nueva identificación
+
+ValidandoMembresia --> IngresoAutorizado : Membresía vigente
+ValidandoMembresia --> IngresoDenegado : Membresía vencida
+
+IngresoAutorizado --> RegistrandoIngreso : Registrar fecha y hora
+
+RegistrandoIngreso --> IngresoRegistrado : Asociar y guardar ingreso
+
+IngresoRegistrado --> [*]
+
+IngresoDenegado --> [*]
+
+@enduml
