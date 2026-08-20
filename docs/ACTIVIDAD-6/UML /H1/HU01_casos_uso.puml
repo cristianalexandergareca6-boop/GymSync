@@ -1,1 +1,30 @@
+@startuml
+left to right direction
 
+actor Recepcionista
+
+rectangle "Sistema de Gestión de Socios" {
+
+    usecase "Registrar nuevo socio" as UC1
+    usecase "Ingresar datos personales" as UC2
+    usecase "Validar C.I." as UC3
+    usecase "Verificar duplicación" as UC4
+    usecase "Generar código único" as UC5
+    usecase "Guardar ficha digital" as UC6
+    usecase "Mostrar confirmación" as UC7
+
+    usecase "Mostrar error:\nC.I. ya registrado" as UC8
+}
+
+Recepcionista --> UC1
+
+UC1 ..> UC2 : <<include>>
+UC1 ..> UC3 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC1 ..> UC5 : <<include>>
+UC1 ..> UC6 : <<include>>
+UC1 ..> UC7 : <<include>>
+
+UC8 ..> UC1 : <<extend>>
+
+@enduml
