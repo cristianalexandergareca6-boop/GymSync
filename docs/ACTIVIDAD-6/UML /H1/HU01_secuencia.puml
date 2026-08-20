@@ -1,0 +1,56 @@
+@startuml
+
+actor Recepcionista
+boundary "Interfaz de Usuario" as UI
+control "SocioController" as Controller
+entity "SocioService" as Service
+database "Base de Datos" as DB
+
+Recepcionista -> UI : ingresarDatosSocio()
+UI -> Controller : registrarSocio(datosSocio)
+
+Controller -> Service : validarDatos(datosSocio)
+
+alt Datos personales válidos
+
+    Service -> DB : verificarCI(ci)
+
+    alt C.I. no registrado
+
+        DB --> Service : CI disponible
+
+        Service -> Service : generarCodigoUnico()
+
+        Service -> DB : guardarSocio(datosSocio, codigoSocio)
+
+        DB --> Service : socioGuardado
+
+        Service --> Controller : registroExitoso(codigoSocio)
+
+        Controller --> UI : mostrarConfirmacion(codigoSocio)
+
+        UI --> Recepcionista : Socio registrado correctamente
+
+    else C.I. ya registrado
+
+        DB --> Service : CI duplicado
+
+        Service --> Controller : errorCIDuplicado()
+
+        Controller --> UI : mostrarError("C.I. ya registrado")
+
+        UI --> Recepcionista : Corregir datos
+
+    end
+
+else Datos personales inválidos
+
+    Service --> Controller : errorValidacion()
+
+    Controller --> UI : mostrarErrores()
+
+    UI --> Recepcionista : Corregir datos
+
+end
+
+@enduml
