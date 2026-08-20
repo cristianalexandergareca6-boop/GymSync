@@ -1,0 +1,25 @@
+@startuml
+
+[*] --> Nueva
+
+Nueva --> SeleccionandoPlan : Iniciar registro
+
+SeleccionandoPlan --> SeleccionandoSocio : Plan seleccionado
+SeleccionandoPlan --> ErrorPlan : Plan inválido
+
+ErrorPlan --> SeleccionandoPlan : Seleccionar otro plan
+
+SeleccionandoSocio --> RegistrandoFechaInicio : Socio seleccionado
+SeleccionandoSocio --> ErrorSocio : Socio no encontrado
+
+ErrorSocio --> SeleccionandoSocio : Seleccionar otro socio
+
+RegistrandoFechaInicio --> CalculandoVencimiento : Fecha registrada
+
+CalculandoVencimiento --> Guardando : Fecha calculada
+
+Guardando --> Registrada : Membresía guardada correctamente
+
+Registrada --> [*]
+
+@enduml
