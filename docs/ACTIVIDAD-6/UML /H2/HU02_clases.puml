@@ -1,0 +1,41 @@
+@startuml
+
+class Socio {
+    - idSocio : int
+    - codigoSocio : String
+    - nombres : String
+    - apellidos : String
+    - ci : String
+    - telefono : String
+    - email : String
+
+    + actualizarDatos(nuevosDatos) : void
+}
+
+class SocioController {
+    + consultarSocio(criterio) : Socio
+    + actualizarSocio(idSocio, nuevosDatos) : ResultadoActualizacion
+}
+
+class SocioService {
+    + buscarSocio(criterio) : Socio
+    + validarDatos(nuevosDatos) : boolean
+    + actualizarSocio(idSocio, nuevosDatos) : boolean
+}
+
+class BaseDeDatos {
+    + buscarSocio(criterio) : Socio
+    + actualizarSocio(idSocio, nuevosDatos) : boolean
+}
+
+class ResultadoActualizacion {
+    + exitoso : boolean
+    + mensaje : String
+}
+
+SocioController --> SocioService : utiliza
+SocioService --> Socio : actualiza
+SocioService --> BaseDeDatos : consulta y guarda
+SocioController --> ResultadoActualizacion : retorna
+
+@enduml
