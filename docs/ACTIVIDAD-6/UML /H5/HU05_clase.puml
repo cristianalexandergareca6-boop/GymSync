@@ -1,0 +1,42 @@
+@startuml
+
+class Socio {
+    - idSocio : int
+    - codigoSocio : String
+    - ci : String
+    - nombres : String
+    - apellidos : String
+
+    + buscarPorCI() : Socio
+    + buscarPorCodigo() : Socio
+}
+
+class Membresia {
+    - idMembresia : int
+    - fechaInicio : Date
+    - fechaVencimiento : Date
+    - estado : String
+
+    + verificarEstado() : String
+    + puedeIngresar() : boolean
+}
+
+class MembresiaController {
+    + consultarEstado(criterio) : Membresia
+}
+
+class MembresiaService {
+    + buscarPorCI(ci) : Socio
+    + buscarPorCodigo(codigoSocio) : Socio
+    + consultarMembresia(idSocio) : Membresia
+    + verificarEstado() : String
+    + puedeIngresar() : boolean
+}
+
+Socio "1" -- "0..*" Membresia : posee
+
+MembresiaController --> MembresiaService
+MembresiaService --> Socio
+MembresiaService --> Membresia
+
+@enduml
