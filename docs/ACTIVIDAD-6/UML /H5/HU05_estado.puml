@@ -1,0 +1,22 @@
+@startuml
+
+[*] --> EsperandoConsulta
+
+EsperandoConsulta --> BuscandoPorCI : Buscar mediante C.I.
+EsperandoConsulta --> BuscandoPorCodigo : Buscar mediante código
+
+BuscandoPorCI --> VerificandoEstado : Socio encontrado
+BuscandoPorCodigo --> VerificandoEstado : Socio encontrado
+
+BuscandoPorCI --> NoEncontrado : No existe socio
+BuscandoPorCodigo --> NoEncontrado : No existe socio
+
+NoEncontrado --> EsperandoConsulta : Nueva búsqueda
+
+VerificandoEstado --> AccesoPermitido : Membresía vigente
+VerificandoEstado --> AccesoDenegado : Membresía vencida
+
+AccesoPermitido --> [*]
+AccesoDenegado --> [*]
+
+@enduml
