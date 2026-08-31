@@ -1,0 +1,52 @@
+@startuml
+
+actor Recepcionista
+boundary "Interfaz de Usuario" as UI
+control "SocioController" as Controller
+entity "SocioService" as Service
+database "Base de Datos" as DB
+
+Recepcionista -> UI : buscarSocio(criterio)
+UI -> Controller : consultarSocio(criterio)
+
+Controller -> Service : buscarSocio(criterio)
+Service -> DB : buscarSocio(criterio)
+
+alt Socio encontrado
+
+    DB --> Service : datosSocio
+    Service --> Controller : socioEncontrado(datosSocio)
+    Controller --> UI : mostrarDatos(datosSocio)
+
+    Recepcionista -> UI : modificarDatos()
+    UI -> Controller : actualizarSocio(idSocio, nuevosDatos)
+
+    Controller -> Service : validarDatos(nuevosDatos)
+
+    alt Datos válidos
+
+        Service -> DB : actualizarSocio(idSocio, nuevosDatos)
+        DB --> Service : cambiosGuardados
+
+        Service --> Controller : actualizacionExitosa
+        Controller --> UI : mostrarConfirmacion()
+        UI --> Recepcionista : Datos actualizados correctamente
+
+    else Datos inválidos
+
+        Service --> Controller : errorValidacion
+        Controller --> UI : mostrarError("Datos inválidos")
+        UI --> Recepcionista : Corregir información
+
+    end
+
+else Socio no encontrado
+
+    DB --> Service : noEncontrado
+    Service --> Controller : errorSocioNoEncontrado
+    Controller --> UI : mostrarError("Socio no encontrado")
+    UI --> Recepcionista : Realizar nueva búsqueda
+
+end
+
+@enduml

@@ -1,0 +1,63 @@
+@startuml
+
+class Socio {
+    - idSocio : int
+    - codigoSocio : String
+    - nombres : String
+    - apellidos : String
+
+    + consultarSocio() : Socio
+}
+
+class Plan {
+    - idPlan : int
+    - nombre : String
+    - duracionDias : int
+    - precio : Decimal
+
+    + obtenerDuracion() : int
+}
+
+class Membresia {
+    - idMembresia : int
+    - fechaInicio : Date
+    - fechaVencimiento : Date
+
+    + calcularFechaVencimiento(duracionDias : int) : Date
+}
+
+class MembresiaController {
+    + obtenerPlan(idPlan) : Plan
+    + registrarMembresia(idSocio, idPlan, fechaInicio) : ResultadoRegistro
+}
+
+class MembresiaService {
+    + buscarPlan(idPlan) : Plan
+    + validarSocio(idSocio) : boolean
+    + calcularFechaVencimiento(fechaInicio, plan) : Date
+    + guardarMembresia(idSocio, idPlan, fechaInicio, fechaVencimiento) : boolean
+}
+
+class BaseDeDatos {
+    + consultarPlan(idPlan) : Plan
+    + buscarSocio(idSocio) : Socio
+    + guardarMembresia(membresia : Membresia) : boolean
+}
+
+class ResultadoRegistro {
+    + exitoso : boolean
+    + mensaje : String
+    + fechaVencimiento : Date
+}
+
+Socio "1" --> "0..*" Membresia : posee
+Plan "1" --> "0..*" Membresia : define duración
+
+MembresiaController --> MembresiaService : utiliza
+MembresiaService --> Socio : consulta
+MembresiaService --> Plan : consulta
+MembresiaService --> Membresia : crea
+MembresiaService --> BaseDeDatos : consulta y guarda
+MembresiaController --> ResultadoRegistro : retorna
+
+@enduml

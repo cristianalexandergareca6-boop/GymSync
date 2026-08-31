@@ -1,0 +1,29 @@
+@startuml
+left to right direction
+
+actor Recepcionista
+
+rectangle "Sistema de Gestión de Membresías" {
+
+    usecase "Consultar estado de membresía" as UC1
+
+    usecase "Buscar por C.I." as UC2
+    usecase "Buscar por código de socio" as UC3
+
+    usecase "Consultar membresía" as UC4
+    usecase "Mostrar estado" as UC5
+    usecase "Validar autorización de ingreso" as UC6
+    usecase "Indicar acceso permitido o denegado" as UC7
+}
+
+Recepcionista --> UC1
+
+UC2 ..> UC1 : <<extend>>
+UC3 ..> UC1 : <<extend>>
+
+UC1 ..> UC4 : <<include>>
+UC1 ..> UC5 : <<include>>
+UC1 ..> UC6 : <<include>>
+UC1 ..> UC7 : <<include>>
+
+@enduml

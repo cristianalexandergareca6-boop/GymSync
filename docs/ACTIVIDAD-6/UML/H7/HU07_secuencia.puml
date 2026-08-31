@@ -1,0 +1,61 @@
+@startuml
+
+actor Recepcionista
+boundary "Interfaz de Usuario" as UI
+control "IngresoController" as Controller
+entity "IngresoService" as Service
+database "Base de Datos" as DB
+
+Recepcionista -> UI : identificarSocio(criterio)
+
+UI -> Controller : registrarIngreso(criterio)
+
+Controller -> Service : buscarSocio(criterio)
+
+Service -> DB : consultarSocio(criterio)
+
+alt Socio encontrado
+
+    DB --> Service : socio
+
+    Service -> DB : consultarMembresia(idSocio)
+
+    DB --> Service : membresia
+
+    Service -> Service : validarVigencia()
+
+    alt Membresía vigente
+
+        Service -> Service : obtenerFechaHoraActual()
+
+        Service -> DB : guardarIngreso(idSocio, fechaHora)
+
+        DB --> Service : ingresoRegistrado
+
+        Service --> Controller : accesoAutorizado()
+
+        Controller --> UI : mostrarConfirmacion()
+
+        UI --> Recepcionista : Ingreso registrado correctamente
+
+    else Membresía vencida
+
+        Service --> Controller : accesoDenegado()
+
+        Controller --> UI : mostrarError("Membresía vencida")
+
+        UI --> Recepcionista : Ingreso no permitido
+
+    end
+
+else Socio no encontrado
+
+    DB --> Service : noEncontrado
+
+    Service --> Controller : errorSocio()
+
+    Controller --> UI : mostrarError("Socio no encontrado")
+
+end
+
+@enduml

@@ -1,0 +1,50 @@
+@startuml
+
+class Socio {
+    - idSocio : int
+    - codigoSocio : String
+    - nombres : String
+    - apellidos : String
+}
+
+class Membresia {
+    - idMembresia : int
+    - fechaInicio : Date
+    - fechaVencimiento : Date
+    - montoTotal : Decimal
+    - saldoPendiente : Decimal
+    - estado : String
+
+    + renovar() : void
+    + actualizarSaldo() : void
+}
+
+class Pago {
+    - idPago : int
+    - fechaPago : Date
+    - monto : Decimal
+
+    + registrarPago() : boolean
+}
+
+class PagoController {
+    + consultarMembresia(idSocio) : Membresia
+    + registrarPago(idMembresia, monto) : boolean
+}
+
+class PagoService {
+    + buscarMembresia(idSocio) : Membresia
+    + procesarPago(idMembresia, monto) : boolean
+    + calcularSaldoPendiente() : Decimal
+    + renovarMembresia() : boolean
+}
+
+Socio "1" -- "0..*" Membresia : posee
+Membresia "1" -- "0..*" Pago : recibe
+
+PagoController --> PagoService
+PagoService --> Socio
+PagoService --> Membresia
+PagoService --> Pago
+
+@enduml

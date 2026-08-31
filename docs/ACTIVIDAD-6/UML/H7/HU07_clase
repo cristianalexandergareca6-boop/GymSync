@@ -1,0 +1,46 @@
+@startuml
+
+class Socio {
+    - idSocio : int
+    - codigoSocio : String
+    - ci : String
+    - nombres : String
+    - apellidos : String
+}
+
+class Membresia {
+    - idMembresia : int
+    - fechaInicio : Date
+    - fechaVencimiento : Date
+    - estado : String
+
+    + estaVigente() : boolean
+}
+
+class Ingreso {
+    - idIngreso : int
+    - fechaHora : DateTime
+
+    + registrar() : boolean
+}
+
+class IngresoController {
+    + registrarIngreso(criterio) : boolean
+}
+
+class IngresoService {
+    + buscarSocio(criterio) : Socio
+    + validarVigencia(idSocio) : boolean
+    + obtenerFechaHoraActual() : DateTime
+    + registrarIngreso(idSocio, fechaHora) : boolean
+}
+
+Socio "1" -- "0..*" Membresia : posee
+Socio "1" -- "0..*" Ingreso : registra
+
+IngresoController --> IngresoService
+IngresoService --> Socio
+IngresoService --> Membresia
+IngresoService --> Ingreso
+
+@enduml}

@@ -1,0 +1,37 @@
+@startuml
+
+actor Recepcionista
+boundary "Interfaz de Usuario" as UI
+control "MembresiaController" as Controller
+entity "MembresiaService" as Service
+database "Base de Datos" as DB
+
+Recepcionista -> UI : seleccionarPlan()
+UI -> Controller : seleccionarPlan(idPlan)
+
+Controller -> Service : buscarPlan(idPlan)
+Service -> DB : consultarPlan(idPlan)
+DB --> Service : datosPlan
+Service --> Controller : planEncontrado
+Controller --> UI : mostrarPlan(plan)
+
+Recepcionista -> UI : asociarSocio(idSocio)
+UI -> Controller : registrarMembresia(idSocio, idPlan, fechaInicio)
+
+Controller -> Service : buscarSocio(idSocio)
+Service -> DB : consultarSocio(idSocio)
+DB --> Service : datosSocio
+
+Service -> Service : calcularFechaVencimiento(fechaInicio, duracionPlan)
+
+Service -> DB : guardarMembresia(idSocio, idPlan, fechaInicio, fechaVencimiento)
+
+DB --> Service : membresiaGuardada
+
+Service --> Controller : registroExitoso(fechaVencimiento)
+
+Controller --> UI : mostrarConfirmacion(fechaVencimiento)
+
+UI --> Recepcionista : Membresía registrada correctamente
+
+@enduml

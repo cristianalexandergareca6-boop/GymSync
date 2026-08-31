@@ -1,0 +1,32 @@
+@startuml
+left to right direction
+
+actor Recepcionista
+
+rectangle "Sistema de Gestión de Membresías" {
+
+    usecase "Registrar membresía" as UC1
+    usecase "Seleccionar plan" as UC2
+    usecase "Buscar y seleccionar socio" as UC3
+    usecase "Registrar fecha de inicio" as UC4
+    usecase "Calcular fecha de vencimiento" as UC5
+    usecase "Guardar membresía" as UC6
+    usecase "Mostrar confirmación" as UC7
+
+    usecase "Mostrar error:\nSocio no encontrado" as UC8
+    usecase "Mostrar error:\nDatos inválidos" as UC9
+}
+
+Recepcionista --> UC1
+
+UC1 ..> UC2 : <<include>>
+UC1 ..> UC3 : <<include>>
+UC1 ..> UC4 : <<include>>
+UC1 ..> UC5 : <<include>>
+UC1 ..> UC6 : <<include>>
+UC1 ..> UC7 : <<include>>
+
+UC8 ..> UC1 : <<extend>>
+UC9 ..> UC1 : <<extend>>
+
+@enduml

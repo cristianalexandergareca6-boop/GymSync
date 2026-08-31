@@ -1,0 +1,43 @@
+@startuml
+
+class Socio {
+    - idSocio : int
+    - codigoSocio : String
+    - nombres : String
+    - apellidos : String
+    - ci : String
+    - telefono : String
+    - email : String
+    - fechaRegistro : Date
+
+    + generarCodigoUnico() : String
+}
+
+class SocioController {
+    + registrarSocio(datosSocio) : ResultadoRegistro
+}
+
+class SocioService {
+    + validarDatos(datosSocio) : boolean
+    + verificarCI(ci : String) : boolean
+    + generarCodigoUnico() : String
+    + guardarSocio(datosSocio, codigoSocio) : boolean
+}
+
+class BaseDeDatos {
+    + buscarPorCI(ci : String) : Socio
+    + guardarSocio(socio : Socio) : boolean
+}
+
+class ResultadoRegistro {
+    + exitoso : boolean
+    + mensaje : String
+    + codigoSocio : String
+}
+
+SocioController --> SocioService : utiliza
+SocioService --> Socio : crea
+SocioService --> BaseDeDatos : consulta y guarda
+SocioController --> ResultadoRegistro : retorna
+
+@enduml

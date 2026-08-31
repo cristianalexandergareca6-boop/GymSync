@@ -1,0 +1,14 @@
+@startuml
+
+[*] --> Verde
+
+Verde : Membresía activa
+Verde --> Amarillo : Próxima a vencer
+
+Amarillo : Próxima a vencer
+Amarillo --> Rojo : Fecha vencida
+
+Rojo : Membresía vencida
+Rojo --> Verde : Membresía renovada
+
+@enduml

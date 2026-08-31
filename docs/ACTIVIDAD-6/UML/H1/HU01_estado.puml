@@ -1,0 +1,25 @@
+@startuml
+
+[*] --> Nuevo
+
+Nuevo --> IngresandoDatos : Iniciar registro
+
+IngresandoDatos --> ValidandoDatos : Enviar datos
+
+ValidandoDatos --> VerificandoCI : Datos válidos
+ValidandoDatos --> ErrorValidacion : Datos inválidos
+
+ErrorValidacion --> IngresandoDatos : Corregir datos
+
+VerificandoCI --> GenerandoCodigo : C.I. disponible
+VerificandoCI --> CIDuplicado : C.I. ya registrado
+
+CIDuplicado --> IngresandoDatos : Corregir C.I.
+
+GenerandoCodigo --> GuardandoSocio : Código generado
+
+GuardandoSocio --> Registrado : Datos guardados correctamente
+
+Registrado --> [*]
+
+@enduml

@@ -1,0 +1,33 @@
+@startuml
+
+class Membresia {
+    - idMembresia : int
+    - fechaInicio : Date
+    - fechaVencimiento : Date
+
+    + calcularDiasRestantes() : int
+    + obtenerEstado() : String
+}
+
+class SemaforoEstado {
+    - estado : String
+
+    + clasificarEstado(diasRestantes) : String
+    + obtenerColor() : String
+}
+
+class EstadoController {
+    + visualizarEstado(idSocio) : String
+}
+
+class EstadoService {
+    + obtenerMembresia(idSocio) : Membresia
+    + calcularDiasRestantes() : int
+    + clasificarEstado() : String
+}
+
+EstadoController --> EstadoService
+EstadoService --> Membresia
+EstadoService --> SemaforoEstado
+
+@enduml
